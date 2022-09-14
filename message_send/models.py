@@ -10,7 +10,7 @@ class Client(models.Model):
 
 
 class Mailing(models.Model):
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     text = models.TextField(max_length=1000)
     clients = models.ManyToManyField(Client, related_name='all_clients')
     end_date = models.DateField()
