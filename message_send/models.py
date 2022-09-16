@@ -1,20 +1,23 @@
 from django.db import models
 from django.core.validators import RegexValidator
-
+import pytz
+d = [(f'{i[0]}', i) for i in pytz.all_timezones]
 
 class Client(models.Model):
     phone_number = models.CharField(validators=[RegexValidator(r'7\d{10}')], max_length=11)
     operator_code = models.CharField(max_length=30)
     tag = models.CharField(max_length=15)
-    time_location = models.DateField()
+    time_location = models.CharField(choices=d)
 
 
 class Mailing(models.Model):
-    date = models.DateField(auto_now_add=True)
+
     text = models.TextField(max_length=1000)
-    clients = models.ManyToManyField(Client, related_name='all_clients')
+    filters = models.CharField(max_length=1000)
+    start_date = models.DateField()
     end_date = models.DateField()
-    time_date = models.TimeField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
 
 
 class Message(models.Model):
