@@ -16,9 +16,9 @@ class MailingViewSet(viewsets.ModelViewSet):
     queryset = Mailing.objects.all()
     serializer_class = Mailing
 
-    @action(methods=['post'], detail=True)
-    def post(self, *args, **kwargs):
-        if df
+    #@action(methods=['post'], detail=True)
+    #def post(self, *args, **kwargs):
+        #if df
 
 
 
