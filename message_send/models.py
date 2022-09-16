@@ -30,7 +30,13 @@ class Message(models.Model):
 
 @receiver(signal=post_save, sender=Mailing)
 def mailing_was_saved(sender, instance, created,  **kwargs):
+    from .functions import send_post_date
+    msg = Message.objects.filter(mailing_id=instance).first()
+    if msg.send_status == True:
+        return
+
     if created:
-        from .functions import send_post_date
-        send_post_date(instance)
+
+        for user in msg.client_message.all():
+            send_post_date.apply_async(msg, user, instance, address=None)
 
