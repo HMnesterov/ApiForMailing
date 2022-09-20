@@ -1,8 +1,12 @@
+
 from rest_framework.decorators import action
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Client, Mailing, Message
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from .models import Client, Mailing, Message
+from rest_framework.generics import ListCreateAPIView
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = Client
@@ -16,10 +20,11 @@ class MailingViewSet(viewsets.ModelViewSet):
     queryset = Mailing.objects.all()
     serializer_class = Mailing
 
-    #@action(methods=['post'], detail=True)
-    #def post(self, *args, **kwargs):
-        #if df
 
+class BookApiView(APIView):
+    def post(self, request):
+
+        return Response({'request': request})
 
 
 

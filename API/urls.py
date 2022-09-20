@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from message_send.views import ClientViewSet, MessageViewSet, MailingViewSet
+from message_send.views import ClientViewSet, MessageViewSet, MailingViewSet, BookApiView
+
 router_for_message = routers.DefaultRouter()
 router_for_client = routers.DefaultRouter()
 router_for_mailing = routers.DefaultRouter()
@@ -29,4 +30,5 @@ urlpatterns = [
     path('api/v1/', include(router_for_message.urls)),
     path('api/v1/', include(router_for_client.urls)),
     path('api/v1', include(router_for_mailing.urls)),
+    path('test/',  BookApiView.as_view())
 ]
