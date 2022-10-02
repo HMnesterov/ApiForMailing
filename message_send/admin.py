@@ -13,11 +13,13 @@ class ClientAdmin(admin.ModelAdmin):
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
     list_display = [
-'text',
+
 'filters',
 'start_date',
 'end_date',
 'start_time',
+
+        'message_id',
 'end_time']
 
 
@@ -25,5 +27,5 @@ class MailingAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ['date',
 'send_status',
-'mailing_id',
+                    'text',
 'client_id']
