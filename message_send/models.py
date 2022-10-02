@@ -15,6 +15,9 @@ class Client(models.Model):
     tag = models.CharField(max_length=15)
     time_location = models.CharField(choices=d, max_length=100)
 
+    def __str__(self):
+        return f"{self.phone_number}"
+
 
 
 
@@ -23,10 +26,8 @@ class Message(models.Model):
     date = models.DateField(auto_now_add=True)
     send_status = models.BooleanField(default=False)
     text = models.TextField(max_length=1000)
-    client_id = models.ForeignKey(Client, related_name='client_message',on_delete=models.SET_NULL, null=True)
+    client_id = models.ManyToManyField(Client, related_name='client_message')
 
-    def __str__(self):
-        return f'Clients: {self.client_id}'
 
 class Mailing(models.Model):
 
@@ -38,11 +39,13 @@ class Mailing(models.Model):
     message_id = models.ForeignKey(Message, related_name='message', on_delete=models.SET_NULL, null=True)
 
 @receiver(signal=post_save, sender=Mailing)
-def mailing_was_saved(sender='Модель', instance='Объект модели', created='Bool true or false',  **kwargs):
+def mailing_was_saved(sender, instance, created,  **kwargs):
     text = instance.message_id.text
     if created:
+        print(instance.message_id.client_id.all())
         for user in instance.message_id.client_id.all():
-            send_post_date.apply_async(text, user, instance)
+            print(user, 'Это пользователь!')
+            send_post_date(text, user, instance)
 
 
 
