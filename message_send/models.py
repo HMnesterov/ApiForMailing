@@ -39,13 +39,12 @@ class Mailing(models.Model):
     message_id = models.ForeignKey(Message, related_name='message', on_delete=models.SET_NULL, null=True)
 
 @receiver(signal=post_save, sender=Mailing)
-def mailing_was_saved(sender, instance, created,  **kwargs):
+def mailing_was_saved(sender, instance, created,  *args, **kwargs):
     text = instance.message_id.text
     if created:
-        print(instance.message_id.client_id.all())
         for user in instance.message_id.client_id.all():
-            print(user, 'Это пользователь!')
-            send_post_date(text, user, instance)
+            print(0)
+            send_post_date.apply_async([text, user.pk, instance.pk])
 
 
 

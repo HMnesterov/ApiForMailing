@@ -23,7 +23,7 @@ class MailingViewSet(viewsets.ModelViewSet):
 
 class BookApiView(APIView):
     def post(self, request):
-
+        print(request)
         return Response({'request': request})
 
 
