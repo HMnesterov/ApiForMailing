@@ -28,6 +28,9 @@ class Message(models.Model):
     text = models.TextField(max_length=1000)
     client_id = models.ManyToManyField(Client, related_name='client_message')
 
+    def __str__(self):
+        return f'{self.text}'
+
 
 class Mailing(models.Model):
 
@@ -38,13 +41,7 @@ class Mailing(models.Model):
     end_time = models.TimeField()
     message_id = models.ForeignKey(Message, related_name='message', on_delete=models.SET_NULL, null=True)
 
-@receiver(signal=post_save, sender=Mailing)
-def mailing_was_saved(sender, instance, created,  *args, **kwargs):
-    text = instance.message_id.text
-    if created:
-        for user in instance.message_id.client_id.all():
-            print(0)
-            send_post_date.apply_async([text, user.pk, instance.pk])
+
 
 
 

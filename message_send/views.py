@@ -23,8 +23,9 @@ class MailingViewSet(viewsets.ModelViewSet):
 
 class BookApiView(APIView):
     def post(self, request):
-        print(request)
-        return Response({'request': request})
+
+        print(f'Запрос получен! {request.data}')
+        return Response({'request': 'запрос принят!'})
 
 
 
