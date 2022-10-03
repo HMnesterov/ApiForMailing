@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'API.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'EmailSend',
+        'NAME': 'ApiSend',
         'USER': 'postgres',
         'PASSWORD': '12345zxcvB',
         'HOST': '127.0.0.1',

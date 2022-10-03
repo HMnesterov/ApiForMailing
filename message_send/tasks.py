@@ -1,3 +1,4 @@
+import pytz
 from celery import shared_task
 from time import sleep
 
@@ -20,12 +21,20 @@ count = 1
 def send_post_date(self, msg, user, instance, address="http://127.0.0.1:8000/test/"):
 
 
-    now = datetime.time()
+
+
+
+
     from .models import Client, Mailing
     user = Client.objects.get(pk=user)
-    instance = Mailing.objects.get(pk=instance)
 
-    if True:
+    instance = Mailing.objects.get(pk=instance)
+    timezone = pytz.timezone(user.timezone)
+    time = datetime.datetime.now(timezone)
+
+    if instance.start_time > time:
+        return self.retry(60*60)
+    elif instance.start_time <= time <= instance.end_time:
         headers = {"Authorization": f'Bearer {token}'}
         print(f'Trying to send a message to {user}...')
         try:
@@ -35,15 +44,15 @@ def send_post_date(self, msg, user, instance, address="http://127.0.0.1:8000/tes
         except:
             print(f'Something goes wrong, i will try to do this again')
             return self.retry(countdown=60)
-
-
-
-
     else:
+        print('Time for sending has gone. It`s over!')
 
-        return self.retry(countdown=60)
+
+
+
+
+
 # celery -A message_send worker -l info --max-memory-per-child=10000
 #pip install eventlet
 #celery -A message_send  worker --loglevel=info -P eventlet
 #celery -A message_send worker --loglevel=info --pool=solo
-#celery -A yourapp.celery worker --loglevel=info --pool=solo

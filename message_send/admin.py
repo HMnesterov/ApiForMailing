@@ -6,7 +6,7 @@ class ClientAdmin(admin.ModelAdmin):
     list_display = ['phone_number',
 'operator_code',
 'tag',
-'time_location']
+'timezone']
 
 
 
@@ -15,8 +15,8 @@ class MailingAdmin(admin.ModelAdmin):
     list_display = [
 
 'filters',
-'start_date',
-'end_date',
+
+
 'start_time',
 
         'message_id',

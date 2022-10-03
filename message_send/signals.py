@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .tasks import send_post_date
-from .models import Mailing
+from .models import Mailing, Message
 
 
 @receiver(signal=post_save, sender=Mailing)
@@ -12,3 +12,4 @@ def mailing_was_saved(sender, instance, created,  *args, **kwargs):
         for user in instance.message_id.client_id.all():
 
             send_post_date.apply_async([text, user.pk, instance.pk])
+        Message.objects.filter(pk=instance.message_id.pk).update(created=True)
