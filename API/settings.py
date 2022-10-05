@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'API.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ApiSend',
+        'NAME': 'YOUR DATABASE NAME',
         'USER': 'postgres',
-        'PASSWORD': '12345zxcvB',
+        'PASSWORD': 'YOUR DATABASE PASSWORD',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
@@ -139,4 +139,4 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-url_address = "https://probe.fbrq.cloud/docs#/send/sendMsg"
+url_address = ""
