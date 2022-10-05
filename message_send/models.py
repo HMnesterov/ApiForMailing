@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
@@ -7,7 +6,6 @@ import pytz
 
 from message_send.tasks import send_post_date
 
-d = [(f'{i[0]}', i) for i in pytz.all_timezones]
 
 class Client(models.Model):
     TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
@@ -18,9 +16,6 @@ class Client(models.Model):
 
     def __str__(self):
         return f"{self.phone_number}"
-
-
-
 
 
 class Message(models.Model):
@@ -34,28 +29,19 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
-
     filters = models.CharField(max_length=1000, blank=True)
 
     start_time = models.DateTimeField()
-
 
     end_time = models.DateTimeField()
     message_id = models.ForeignKey(Message, related_name='message', on_delete=models.SET_NULL, null=True)
 
 
-
-
-
-
-
-
 @receiver(signal=post_save, sender=Mailing)
-def mailing_was_saved(sender, instance, created,  *args, **kwargs):
+def mailing_was_saved(sender, instance, created, *args, **kwargs):
+    '''Signal for celery'''
     text = instance.message_id.text
     if created:
-
         for user in instance.message_id.client_id.all():
-
             send_post_date.apply_async([text, user.pk, instance.pk])
         Message.objects.filter(pk=instance.message_id.pk).update(send_status=True)

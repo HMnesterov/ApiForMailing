@@ -13,22 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-from rest_framework import routers
-from message_send.views import ClientViewSet, MessageViewSet, MailingViewSet, BookApiView
 
-router_for_message = routers.DefaultRouter()
-router_for_client = routers.DefaultRouter()
-router_for_mailing = routers.DefaultRouter()
-router_for_client.register(r'client', ClientViewSet, basename='client')
-router_for_client.register(r'mailing', MailingViewSet, basename='mailing')
-router_for_client.register(r'message', ClientViewSet, basename='message')
+from django.urls import path, include
+from message_send import urls
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/', include(router_for_message.urls)),
-    path('api/v1/', include(router_for_client.urls)),
-    path('api/v1', include(router_for_mailing.urls)),
-    path('test/',  BookApiView.as_view())
+    path('', include(urls)),
 ]
